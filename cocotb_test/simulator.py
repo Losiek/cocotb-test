@@ -18,6 +18,8 @@ else:
     _space_re = re.compile(r"([\s])")    
 
 def as_tcl_value(value):
+    if value == '':
+        return value
     # add '\' before special characters and spaces
     value = _magic_re.sub(r"\\\1", value)
     value = value.replace("\n", r"\n")
@@ -300,7 +302,7 @@ class Icarus(Simulator):
         return cmd_compile
 
     def run_command(self):
-        return ["vvp", "-M", self.lib_dir, "-m", "libvpi"] + self.simulation_args + [self.sim_file] + self.plus_args
+        return ["vvp", "-M", self.lib_dir, "-m", "libvpi"] + [self.sim_file] + self.simulation_args + self.plus_args
 
     def build_command(self):
         cmd = []
